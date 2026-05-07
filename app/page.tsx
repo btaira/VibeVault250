@@ -1,163 +1,159 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect } from "react";
-import { CATEGORIES } from "@/lib/types";
+import { useMemo, useState, useCallback, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import { PROJECTS } from "@/data/projects";
+import { CATEGORIES } from "@/lib/types";
+import type { CategoryId, Project } from "@/lib/types";
+import { useVibeStore } from "@/lib/store";
+import { pickShuffleSequence, pickWeightedProject } from "@/lib/randomizer";
+import FilterBar from "@/components/FilterBar";
+import ProjectCard from "@/components/ProjectCard";
+import SurpriseMeButton from "@/components/SurpriseMeButton";
+import SlotMachine from "@/components/SlotMachine";
+import DeepDiveModal from "@/components/DeepDiveModal";
 
-export default function ShowcasePage() {
+const SLOT_FRAMES = 18;
+
+export default function Home() {
+  const { scores, hydrated } = useVibeStore();
+  const [activeCategory, setActiveCategory] = useState<CategoryId | "all">("all");
+  const [modalProject, setModalProject] = useState<Project | null>(null);
+  const [slotSequence, setSlotSequence] = useState<Project[] | null>(null);
+  const [slotWinner, setSlotWinner] = useState<Project | null>(null);
+  const [spinning, setSpinning] = useState(false);
+
   useEffect(() => {
-    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+    if (typeof window !== 'undefined' && window.location.hostname === 'btaira.github.io') {
       window.location.href = '/home';
     }
   }, []);
 
+  // Filtered projects
+  const filtered = useMemo(
+    () =>
+      activeCategory === "all"
+        ? PROJECTS
+        : PROJECTS.filter((p) => p.category === activeCategory),
+    [activeCategory],
+  );
+
+  // Category counts
+  const counts = useMemo(() => {
+    const c = { all: PROJECTS.length } as Record<CategoryId | "all", number>;
+    for (const cat of CATEGORIES) {
+      c[cat.id] = PROJECTS.filter((p) => p.category === cat.id).length;
+    }
+    return c;
+  }, []);
+
+  const handleSurprise = useCallback(() => {
+    if (spinning) return;
+    setSpinning(true);
+
+    const safeScores = hydrated ? scores : { saas: 0, creative: 0, utility: 0, social: 0, deeptech: 0 };
+    const sequence = pickShuffleSequence(PROJECTS, safeScores, SLOT_FRAMES);
+    const { project: winner } = pickWeightedProject(PROJECTS, { scores: safeScores });
+
+    setSlotSequence(sequence);
+    setSlotWinner(winner);
+  }, [spinning, hydrated, scores]);
+
+  const handleSlotDone = useCallback(() => {
+    setSpinning(false);
+    const winner = slotWinner;
+    setSlotSequence(null);
+    setSlotWinner(null);
+    if (winner) setModalProject(winner);
+  }, [slotWinner]);
+
   return (
     <main className="relative z-10 min-h-screen">
-      <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="rounded-[2rem] border border-white/10 bg-slate-950/90 p-10 shadow-2xl shadow-slate-950/20 backdrop-blur-xl">
-          <div className="mb-8 space-y-4 text-slate-100">
-            <p className="text-sm uppercase tracking-[0.3em] text-cyan-300">VibeVault 250</p>
-            <h1 className="text-4xl font-semibold sm:text-5xl">Project Showcase</h1>
-            <p className="max-w-3xl text-slate-300 sm:text-lg">
-              Browse the app that brings 250 AI project ideas to life. Filter ideas by category,
-              explore idea prompts, and deploy the site locally or inside a Docker container.
+      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300 shadow-sm ring-1 ring-white/5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              Discover the app showcase, deploy notes, and Docker instructions on the
+              <Link href="/home" className="ml-1 inline font-semibold text-cyan-300 hover:text-white">
+                Showcase page
+              </Link>.
             </p>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-[1fr_1fr]">
-            <div className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6">
-              <h2 className="text-2xl font-semibold text-white">What this app does</h2>
-              <ul className="space-y-3 text-slate-300">
-                <li>• Showcases 250 project ideas organized by category</li>
-                <li>• Lets you filter by SaaS, Creative, Utility, Social, and Deep Tech</li>
-                <li>• Includes a surprise picker with a slot machine animation</li>
-                <li>• Opens a deep dive modal with prompts, stack ideas, and difficulty</li>
-                <li>• Is built with Next.js, React, Tailwind CSS, Framer Motion, and Zustand</li>
-              </ul>
-            </div>
-
-            <div className="space-y-6 rounded-3xl border border-white/10 bg-white/5 p-6">
-              <h2 className="text-2xl font-semibold text-white">Project details</h2>
-              <p className="text-slate-300">
-                The app contains {PROJECTS.length} ideas across {CATEGORIES.length} categories.
-                Each idea includes a prompt, stack suggestions, and a difficulty rating.
-              </p>
-              <div className="grid gap-3 sm:grid-cols-2">
-                {CATEGORIES.map((category) => (
-                  <div
-                    key={category.id}
-                    className="rounded-3xl border border-white/10 bg-slate-950/80 p-4"
-                  >
-                    <p className="text-2xl">{category.emoji}</p>
-                    <p className="mt-2 text-lg font-semibold text-white">{category.label}</p>
-                    <p className="mt-1 text-sm text-slate-400">{category.description}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">View Live Demo</h2>
-            <p className="mt-3 text-slate-300">
-              Check out the deployed version of VibeVault 250 on GitHub Pages.
-            </p>
-            <a
-              href="https://btaira.github.io/VibeVault250/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-4 inline-flex rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
-            >
-              Open Live Site
-            </a>
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">App Screenshots</h2>
-            <p className="mt-3 text-slate-300">
-              Here's a visual overview of the app's key features and pages.
-            </p>
-            <div className="mt-6 space-y-6">
-              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-6">
-                <h3 className="text-xl font-semibold text-white mb-4">Home Page</h3>
-                <p className="text-slate-400 mb-4">
-                  The main browsing interface with category filters, project grid, and the surprise picker button.
-                </p>
-                <iframe
-                  src="/home"
-                  className="w-full h-96 rounded-2xl border border-white/10"
-                  title="VibeVault 250 Home Page"
-                ></iframe>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-6">
-                <h3 className="text-xl font-semibold text-white mb-4">Interactive Features</h3>
-                <p className="text-slate-400 mb-4">
-                  Try the slot machine surprise picker and deep dive modals by visiting the live site.
-                </p>
-                <a
-                  href="https://btaira.github.io/VibeVault250/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
-                >
-                  Try Interactive Features
-                </a>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">Run locally</h2>
-            <p className="mt-3 text-slate-300">
-              Use the regular Next.js workflow to install dependencies and start the development server.
-            </p>
-            <pre className="mt-4 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
-              <code>npm install{`
-`}npm run dev</code>
-            </pre>
-            <p className="mt-4 text-slate-300">
-              Open <span className="font-medium text-white">http://localhost:3000</span> to view the app.
-            </p>
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">Docker</h2>
-            <p className="mt-3 text-slate-300">
-              The repository includes a multi-stage `Dockerfile` that builds the app for production and
-              runs it on port 3000.
-            </p>
-            <pre className="mt-4 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
-              <code>docker build -t vibevault-250 .{`
-`}docker run --rm -p 3000:3000 vibevault-250</code>
-            </pre>
-            <p className="mt-4 text-slate-300">
-              After the container starts, visit <span className="font-medium text-white">http://localhost:3000</span>.
-            </p>
-            <p className="mt-4 text-slate-300">
-              If you publish the image to a registry, pull it using a command like:
-            </p>
-            <pre className="mt-2 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
-              <code>docker pull &lt;username&gt;/vibevault-250:latest</code>
-            </pre>
-          </div>
-
-          <div className="mt-10 flex flex-col gap-4 rounded-3xl border border-white/10 bg-slate-950/80 p-6 sm:flex-row sm:items-center sm:justify-between">
-            <div>
-              <h2 className="text-xl font-semibold text-white">Explore the app</h2>
-              <p className="mt-2 text-slate-400">
-                Visit the home page for interactive browsing, surprise picks, and modal idea details.
-              </p>
-            </div>
             <Link
               href="/home"
-              className="inline-flex rounded-full bg-cyan-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+              className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
             >
-              Go to Home
+              View Showcase
             </Link>
           </div>
         </div>
       </section>
+
+      {/* Sticky filter bar */}
+      <FilterBar
+        active={activeCategory}
+        onSelect={setActiveCategory}
+        counts={counts}
+      />
+
+      {/* Bento grid */}
+      <section className="mx-auto max-w-7xl px-4 pb-32 pt-6 sm:px-6">
+        {/* Category hero for non-all views */}
+        <AnimatePresence mode="wait">
+          {activeCategory !== "all" && (() => {
+            const cat = CATEGORIES.find((c) => c.id === activeCategory)!;
+            return (
+              <div className="mb-8 text-center">
+                <div className="text-5xl mb-2">{cat.emoji}</div>
+                <h2 className={`text-2xl font-bold bg-gradient-to-r ${cat.accent} bg-clip-text text-transparent`}>
+                  {cat.label}
+                </h2>
+                <p className="mt-1 text-sm text-fg-muted">{cat.description}</p>
+              </div>
+            );
+          })()}
+        </AnimatePresence>
+
+        {/* Grid */}
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((project) => (
+              <ProjectCard
+                key={project.id}
+                project={project}
+                onDeepDive={setModalProject}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+
+        {filtered.length === 0 && (
+          <div className="flex flex-col items-center justify-center py-32 text-center">
+            <span className="text-5xl mb-4">🌌</span>
+            <p className="text-fg-muted">No ideas in this category yet.</p>
+          </div>
+        )}
+      </section>
+
+      {/* Floating surprise button */}
+      <SurpriseMeButton onClick={handleSurprise} disabled={spinning} />
+
+      {/* Slot machine overlay */}
+      <AnimatePresence>
+        {slotSequence && slotWinner && (
+          <SlotMachine
+            sequence={slotSequence}
+            winner={slotWinner}
+            onDone={handleSlotDone}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Deep dive modal */}
+      <DeepDiveModal
+        project={modalProject}
+        onClose={() => setModalProject(null)}
+      />
     </main>
   );
 }
