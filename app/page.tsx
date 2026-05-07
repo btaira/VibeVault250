@@ -1,14 +1,9 @@
-import type { Metadata } from "next";
+"use client";
+
 import Link from "next/link";
 import { useEffect } from "react";
 import { CATEGORIES } from "@/lib/types";
 import { PROJECTS } from "@/data/projects";
-
-export const metadata: Metadata = {
-  title: "VibeVault 250 — Project Showcase",
-  description:
-    "Explore the VibeVault 250 project showcase, learn how it works, and run it locally or in Docker.",
-};
 
 export default function ShowcasePage() {
   useEffect(() => {
