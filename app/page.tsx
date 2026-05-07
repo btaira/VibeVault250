@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo, useState, useCallback } from "react";
 import { AnimatePresence } from "framer-motion";
 import { PROJECTS } from "@/data/projects";
@@ -63,6 +64,25 @@ export default function Home() {
 
   return (
     <main className="relative z-10 min-h-screen">
+      <section className="mx-auto max-w-7xl px-4 pt-6 sm:px-6">
+        <div className="mb-6 rounded-3xl border border-white/10 bg-white/5 p-4 text-sm text-slate-300 shadow-sm ring-1 ring-white/5">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p>
+              Discover the app showcase, deploy notes, and Docker instructions on the
+              <Link href="/showcase" className="ml-1 inline font-semibold text-cyan-300 hover:text-white">
+                Showcase page
+              </Link>.
+            </p>
+            <Link
+              href="/showcase"
+              className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+            >
+              View Showcase
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Sticky filter bar */}
       <FilterBar
         active={activeCategory}
