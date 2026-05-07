@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { useEffect } from "react";
 import { CATEGORIES } from "@/lib/types";
 import { PROJECTS } from "@/data/projects";
 
@@ -10,6 +11,12 @@ export const metadata: Metadata = {
 };
 
 export default function ShowcasePage() {
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hostname === 'localhost') {
+      window.location.href = '/home';
+    }
+  }, []);
+
   return (
     <main className="relative z-10 min-h-screen">
       <section className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
