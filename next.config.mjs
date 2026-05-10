@@ -1,9 +1,13 @@
 /** @type {import('next').NextConfig} */
+const isStaticExport = process.env.STATIC_EXPORT === "true";
+
 const nextConfig = {
   reactStrictMode: true,
-  output: "export",
-  basePath: "/VibeVault250",
-  images: { unoptimized: true },
+  output: isStaticExport ? "export" : "standalone",
+  ...(isStaticExport && {
+    basePath: "/VibeVault250",
+    images: { unoptimized: true },
+  }),
 };
 
 export default nextConfig;
