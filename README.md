@@ -1,6 +1,6 @@
 # VibeVault 250
 
-This is readme.md: VibeVault 250 is a Next.js app showcasing 250 AI project ideas from the Vibe coding community.
+VibeVault 250 is a Next.js app showcasing 250 AI project ideas from the Vibe coding community.
 It helps you browse ideas by category, deep dive into prompts and stacks, and discover one randomly using a slot-machine-inspired surprise picker.
 
 ## What’s Inside
