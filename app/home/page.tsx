@@ -1,8 +1,13 @@
-"use client";
-
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CATEGORIES } from "@/lib/types";
 import { PROJECTS } from "@/data/projects";
+
+export const metadata: Metadata = {
+  title: "Showcase | VibeVault 250",
+  description:
+    "Explore the VibeVault 250 project showcase, learn how it works, and run it locally or in Docker.",
+};
 
 export default function ShowcasePage() {
   return (
@@ -52,6 +57,20 @@ export default function ShowcasePage() {
           </div>
 
           <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
+            <h2 className="text-2xl font-semibold text-white">Run locally</h2>
+            <p className="mt-3 text-slate-300">
+              Use the regular Next.js workflow to install dependencies and start the development server.
+            </p>
+            <pre className="mt-4 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
+              <code>npm install{`
+`}npm run dev</code>
+            </pre>
+            <p className="mt-4 text-slate-300">
+              Open <span className="font-medium text-white">http://localhost:3000</span> to view the app.
+            </p>
+          </div>
+
+          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
             <h2 className="text-2xl font-semibold text-white">View Live Demo</h2>
             <p className="mt-3 text-slate-300">
               Check out the deployed version of VibeVault 250 on GitHub Pages.
@@ -67,72 +86,82 @@ export default function ShowcasePage() {
           </div>
 
           <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">App Screenshots</h2>
+            <h2 className="text-2xl font-semibold text-white">App Screenshots & Features</h2>
             <p className="mt-3 text-slate-300">
               Here's a visual overview of the app's key features and pages.
             </p>
-            <div className="mt-6 space-y-6">
-              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-6">
-                <h3 className="text-xl font-semibold text-white mb-4">Home Page</h3>
-                <p className="text-slate-400 mb-4">
+            <div className="mt-6 grid gap-6 sm:grid-cols-2">
+              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
+                <div className="aspect-video rounded-2xl bg-slate-800 flex items-center justify-center text-4xl">
+                  🏠
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-white">Home Page</h3>
+                <p className="mt-2 text-sm text-slate-400">
                   The main browsing interface with category filters, project grid, and the surprise picker button.
-                </p>
-                <iframe
-                  src="/"
-                  className="w-full h-96 rounded-2xl border border-white/10"
-                  title="VibeVault 250 Home Page"
-                ></iframe>
-              </div>
-              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-6">
-                <h3 className="text-xl font-semibold text-white mb-4">Interactive Features</h3>
-                <p className="text-slate-400 mb-4">
-                  Try the slot machine surprise picker and deep dive modals by visiting the live site.
+                  Shows the sticky filter bar at the top and a grid of project cards below.
                 </p>
                 <a
                   href="https://btaira.github.io/VibeVault250/"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex rounded-full bg-cyan-500 px-4 py-2 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400"
+                  className="mt-3 inline-block text-sm text-cyan-300 hover:text-white"
                 >
-                  Try Interactive Features
+                  View on live site →
+                </a>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
+                <div className="aspect-video rounded-2xl bg-slate-800 flex items-center justify-center text-4xl">
+                  🎰
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-white">Slot Machine Surprise</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Click the floating surprise button to trigger the slot machine animation.
+                  It spins through random projects and lands on a weighted pick based on your category preferences.
+                </p>
+                <a
+                  href="https://btaira.github.io/VibeVault250/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-sm text-cyan-300 hover:text-white"
+                >
+                  Try it live →
+                </a>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
+                <div className="aspect-video rounded-2xl bg-slate-800 flex items-center justify-center text-4xl">
+                  🔍
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-white">Deep Dive Modal</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  Click any project card to open a detailed modal with the full description, AI prompt, tech stack suggestions, and difficulty level.
+                </p>
+                <a
+                  href="https://btaira.github.io/VibeVault250/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-sm text-cyan-300 hover:text-white"
+                >
+                  Explore projects →
+                </a>
+              </div>
+              <div className="rounded-3xl border border-white/10 bg-slate-950/80 p-4">
+                <div className="aspect-video rounded-2xl bg-slate-800 flex items-center justify-center text-4xl">
+                  📱
+                </div>
+                <h3 className="mt-4 text-lg font-semibold text-white">Responsive Design</h3>
+                <p className="mt-2 text-sm text-slate-400">
+                  The app works great on desktop, tablet, and mobile with a clean, cyber-themed UI using Tailwind CSS and Framer Motion animations.
+                </p>
+                <a
+                  href="https://btaira.github.io/VibeVault250/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="mt-3 inline-block text-sm text-cyan-300 hover:text-white"
+                >
+                  See responsive layout →
                 </a>
               </div>
             </div>
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">Run locally</h2>
-            <p className="mt-3 text-slate-300">
-              Use the regular Next.js workflow to install dependencies and start the development server.
-            </p>
-            <pre className="mt-4 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
-              <code>npm install{`
-`}npm run dev</code>
-            </pre>
-            <p className="mt-4 text-slate-300">
-              Open <span className="font-medium text-white">http://localhost:3000</span> to view the app.
-            </p>
-          </div>
-
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/5 p-6">
-            <h2 className="text-2xl font-semibold text-white">Docker</h2>
-            <p className="mt-3 text-slate-300">
-              The repository includes a multi-stage `Dockerfile` that builds the app for production and
-              runs it on port 3000.
-            </p>
-            <pre className="mt-4 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
-              <code>docker build -t vibevault-250 .{`
-`}docker run --rm -p 3000:3000 vibevault-250</code>
-            </pre>
-            <p className="mt-4 text-slate-300">
-              After the container starts, visit <span className="font-medium text-white">http://localhost:3000</span>.
-            </p>
-            <p className="mt-4 text-slate-300">
-              If you publish the image to a registry, pull it using a command like:
-            </p>
-            <pre className="mt-2 rounded-3xl bg-slate-950/80 p-4 text-sm text-slate-200">
-              <code>docker pull &lt;username&gt;/vibevault-250:latest</code>
-            </pre>
           </div>
 
           <div className="mt-10 flex flex-col gap-4 rounded-3xl border border-white/10 bg-slate-950/80 p-6 sm:flex-row sm:items-center sm:justify-between">
