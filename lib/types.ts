@@ -28,7 +28,7 @@ export const CATEGORIES: Category[] = [
     emoji: "💼",
     accent: "from-cyan-400 to-blue-500",
     glow: "rgba(34, 211, 238, 0.55)",
-    description: "Subscription-ready businesses you can ship this weekend.",
+    description: "53 web apps with auth, payments, and recurring revenue — from AI tools to vertical SaaS.",
   },
   {
     id: "creative",
@@ -36,7 +36,7 @@ export const CATEGORIES: Category[] = [
     emoji: "🎨",
     accent: "from-fuchsia-400 to-pink-500",
     glow: "rgba(232, 121, 249, 0.55)",
-    description: "Generative art, audio toys, and expressive playgrounds.",
+    description: "51 generative art projects, audio toys, visualizers, and expressive browser playgrounds.",
   },
   {
     id: "utility",
@@ -44,7 +44,7 @@ export const CATEGORIES: Category[] = [
     emoji: "🛠️",
     accent: "from-emerald-400 to-teal-500",
     glow: "rgba(52, 211, 153, 0.55)",
-    description: "Tiny tools that quietly fix everyday friction.",
+    description: "48 tools — browser extensions, desktop apps, and scripts that fix real everyday friction.",
   },
   {
     id: "social",
@@ -52,7 +52,7 @@ export const CATEGORIES: Category[] = [
     emoji: "🌐",
     accent: "from-amber-400 to-orange-500",
     glow: "rgba(251, 191, 36, 0.55)",
-    description: "Community, multiplayer, and shared-presence apps.",
+    description: "48 community, multiplayer, and shared-presence apps — from niche networks to IRL meetups.",
   },
   {
     id: "deeptech",
@@ -60,6 +60,6 @@ export const CATEGORIES: Category[] = [
     emoji: "⚛️",
     accent: "from-violet-400 to-indigo-500",
     glow: "rgba(167, 139, 250, 0.55)",
-    description: "AI, blockchain, edge compute, and frontier tinkering.",
+    description: "50 projects at the frontier — LLM infra, ML tooling, hardware, crypto, and systems programming.",
   },
 ];

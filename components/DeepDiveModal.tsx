@@ -151,12 +151,12 @@ export default function DeepDiveModal({ project, onClose }: Props) {
               </div>
 
               {/* Actions */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-3">
                 <motion.button
-                  whileTap={{ scale: 0.94 }}
+                  whileTap={{ scale: 0.97 }}
                   onClick={handleCopy}
                   className={`
-                    flex-1 flex items-center justify-center gap-2 rounded-xl py-3.5 text-sm font-bold
+                    w-full flex items-center justify-center gap-2 rounded-xl py-4 text-sm font-bold
                     transition-all duration-200
                     ${copied
                       ? "bg-neon-emerald/20 text-neon-emerald border border-neon-emerald/50 shadow-[0_0_20px_rgba(52,211,153,0.4)]"
@@ -165,26 +165,42 @@ export default function DeepDiveModal({ project, onClose }: Props) {
                   `}
                 >
                   <span className="text-base">{copied ? "✅" : "⧉"}</span>
-                  <span>{copied ? "Prompt Copied! 🎉" : "Copy Build Prompt"}</span>
+                  <span>{copied ? "Prompt Copied!" : "Copy Build Prompt"}</span>
                 </motion.button>
 
-                <button
-                  onClick={handleLike}
-                  className={`rounded-xl p-3.5 transition-all duration-200 ${
-                    liked
-                      ? "bg-neon-magenta/20 text-neon-magenta border border-neon-magenta/40 shadow-[0_0_14px_rgba(232,121,249,0.4)]"
-                      : "glass text-fg-dim hover:text-neon-magenta hover:border-neon-magenta/30"
-                  }`}
-                  aria-label={liked ? "Unlike" : "Like"}
-                >
-                  <motion.span
-                    animate={liked ? { scale: [1, 1.5, 1] } : {}}
-                    transition={{ duration: 0.28 }}
-                    className="block text-lg leading-none"
+                {copied && (
+                  <motion.p
+                    initial={{ opacity: 0, y: -4 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="text-center text-xs text-fg-dim"
                   >
-                    {liked ? "❤️" : "🤍"}
-                  </motion.span>
-                </button>
+                    Paste into{" "}
+                    <span className="font-semibold text-neon-cyan">Claude</span>,{" "}
+                    <span className="font-semibold text-neon-cyan">Cursor</span>, or{" "}
+                    <span className="font-semibold text-neon-cyan">ChatGPT</span> to start building 🚀
+                  </motion.p>
+                )}
+
+                <div className="flex items-center justify-center">
+                  <button
+                    onClick={handleLike}
+                    className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm transition-all duration-200 ${
+                      liked
+                        ? "bg-neon-magenta/20 text-neon-magenta border border-neon-magenta/40 shadow-[0_0_14px_rgba(232,121,249,0.4)]"
+                        : "glass text-fg-dim hover:text-neon-magenta hover:border-neon-magenta/30"
+                    }`}
+                    aria-label={liked ? "Unlike" : "Like"}
+                  >
+                    <motion.span
+                      animate={liked ? { scale: [1, 1.5, 1] } : {}}
+                      transition={{ duration: 0.28 }}
+                      className="block text-lg leading-none"
+                    >
+                      {liked ? "❤️" : "🤍"}
+                    </motion.span>
+                    <span>{liked ? "Liked" : "Save to favorites"}</span>
+                  </button>
+                </div>
               </div>
             </div>
           </motion.div>

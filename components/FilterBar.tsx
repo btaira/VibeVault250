@@ -5,13 +5,17 @@ import { motion } from "framer-motion";
 import { CATEGORIES } from "@/lib/types";
 import type { CategoryId } from "@/lib/types";
 
+export type Difficulty = "all" | "Beginner" | "Intermediate" | "Advanced";
+
 interface Props {
   active: CategoryId | "all";
   onSelect: (id: CategoryId | "all") => void;
   counts: Record<CategoryId | "all", number>;
+  difficulty: Difficulty;
+  onDifficulty: (d: Difficulty) => void;
 }
 
-export default function FilterBar({ active, onSelect, counts }: Props) {
+export default function FilterBar({ active, onSelect, counts, difficulty, onDifficulty }: Props) {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
@@ -50,6 +54,39 @@ export default function FilterBar({ active, onSelect, counts }: Props) {
                 {counts[active]} idea{counts[active] !== 1 ? "s" : ""}
               </span>
             </div>
+          </div>
+
+          {/* Difficulty pills */}
+          <div className="no-scrollbar flex gap-2 overflow-x-auto pb-1 mb-2">
+            {(["all", "Beginner", "Intermediate", "Advanced"] as Difficulty[]).map((d) => {
+              const isActive = difficulty === d;
+              const colors: Record<Difficulty, string> = {
+                all: "text-fg-muted",
+                Beginner: "text-neon-emerald",
+                Intermediate: "text-neon-amber",
+                Advanced: "text-neon-magenta",
+              };
+              const activeColors: Record<Difficulty, string> = {
+                all: "bg-white/10 text-fg-base border-white/20",
+                Beginner: "bg-neon-emerald/15 text-neon-emerald border-neon-emerald/40",
+                Intermediate: "bg-neon-amber/15 text-neon-amber border-neon-amber/40",
+                Advanced: "bg-neon-magenta/15 text-neon-magenta border-neon-magenta/40",
+              };
+              return (
+                <motion.button
+                  key={d}
+                  onClick={() => onDifficulty(d)}
+                  whileTap={{ scale: 0.93 }}
+                  className={`
+                    flex shrink-0 items-center gap-1 rounded-full border px-3 py-1
+                    text-xs font-semibold uppercase tracking-wide transition-all duration-200
+                    ${isActive ? activeColors[d] : `glass border-transparent ${colors[d]} hover:border-glass-border`}
+                  `}
+                >
+                  {d === "all" ? "Any Level" : d}
+                </motion.button>
+              );
+            })}
           </div>
 
           {/* Category pills */}
