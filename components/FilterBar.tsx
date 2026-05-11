@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import { CATEGORIES } from "@/lib/types";
 import type { CategoryId } from "@/lib/types";
 
@@ -49,10 +50,16 @@ export default function FilterBar({ active, onSelect, counts, difficulty, onDiff
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2 text-xs text-fg-dim">
+            <div className="flex items-center gap-3 text-xs text-fg-dim">
               <span className="hidden sm:inline">
                 {counts[active]} idea{counts[active] !== 1 ? "s" : ""}
               </span>
+              <Link
+                href="/showcase"
+                className="glass rounded-full border border-glass-border px-3 py-1 text-xs font-medium text-fg-muted hover:text-fg-base hover:border-neon-violet/40 transition-colors duration-200"
+              >
+                About
+              </Link>
             </div>
           </div>
 
