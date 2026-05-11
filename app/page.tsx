@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, useCallback, useEffect } from "react";
+import { useMemo, useState, useCallback, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { AnimatePresence } from "framer-motion";
 import { PROJECTS } from "@/data/projects";
@@ -16,7 +16,7 @@ import DeepDiveModal from "@/components/DeepDiveModal";
 
 const SLOT_FRAMES = 18;
 
-export default function Home() {
+function HomeContent() {
   const { scores, hydrated } = useVibeStore();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -147,5 +147,13 @@ export default function Home() {
         onClose={handleCloseModal}
       />
     </main>
+  );
+}
+
+export default function Home() {
+  return (
+    <Suspense>
+      <HomeContent />
+    </Suspense>
   );
 }
