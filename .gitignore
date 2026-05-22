@@ -7,3 +7,4 @@ out
 *.log
 .vscode
 .idea
+.claude/worktrees/flamboyant-sutherland-e3790c/
