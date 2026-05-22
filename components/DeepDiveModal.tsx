@@ -70,6 +70,9 @@ export default function DeepDiveModal({ project, onClose }: Props) {
 
           {/* Modal */}
           <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="modal-title"
             initial={{ opacity: 0, scale: 0.92, y: 24 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.92, y: 24 }}
@@ -100,7 +103,7 @@ export default function DeepDiveModal({ project, onClose }: Props) {
               </div>
 
               {/* Title */}
-              <h2 className="glow-text mb-2 text-3xl font-bold text-fg-base leading-tight">
+              <h2 id="modal-title" className="glow-text mb-2 text-3xl font-bold text-fg-base leading-tight">
                 {project.title}
               </h2>
               <p className="mb-5 text-lg font-medium text-neon-cyan">{project.tagline}</p>
