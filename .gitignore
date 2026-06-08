@@ -7,4 +7,5 @@ out
 *.log
 .vscode
 .idea
+tsconfig.tsbuildinfo
 .claude/worktrees/flamboyant-sutherland-e3790c/
